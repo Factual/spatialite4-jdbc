@@ -1,10 +1,10 @@
 SpatiaLite 4 JDBC Driver
 ==================
 
-SpatiaLite 4 JDBC requires no configuration, since native DLLs are assembled into a single JAR (Java Archive) file. 
+SpatiaLite 4 JDBC requires no configuration, since native DLLs are assembled into a single JAR (Java Archive) file.
 
 This is a fork of Xerial's current SQLite library and Justin Deoliveira's SpatiaLite driver, with added support for the latest SpatiaLite library (4.2+).
-Spatialite 4.2+ has changed significantly, especially in regards to the extension loading. Therefore this updated and incompatible library for Spatialite 4.2 and upwards was created. 
+Spatialite 4.2+ has changed significantly, especially in regards to the extension loading. Therefore this updated and incompatible library for Spatialite 4.2 and upwards was created.
 
 This library bases on the following two upstream libraries:
 Xerial: https://github.com/xerial/sqlite-jdbc
@@ -21,17 +21,17 @@ Current versions included:
 SQLite: 3.11.1
 SpatiaLite: 4.3.0a
 
-Current status: Initial version. Builds on OS X and Linux with all tests ok. No real-world testing done yet. 
+Current status: Initial version. Builds on OS X and Linux with all tests ok. No real-world testing done yet.
 
 Usage
-============ 
+============
 
 Note: Please see Xerial's documentation for common SQLite usage examples. This is just a very short introduction on how to initialize the SpatiaLite 4 JDBC driver.
 
 For the general usage of JDBC, see [JDBC Tutorial](http://docs.oracle.com/javase/tutorial/jdbc/index.html) or [Oracle JDBC Documentation](http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136101.html).
 
-1.  Download spatialite-jdbc-(VERSION).jar from the release directory and append this jar file into your classpath. 
-2.  Load the JDBC driver `org.spatialite.JDBC` from your code. (see the example below) 
+1.  Download spatialite-jdbc-(VERSION).jar from the release directory and append this jar file into your classpath.
+2.  Load the JDBC driver `org.spatialite.JDBC` from your code. (see the example below)
 
 * Usage Example  
 
@@ -53,14 +53,14 @@ public class Spatialite
     public static Connection getConnection(Properties prop) throws SQLException {
         return DriverManager.getConnection("jdbc:spatialite::memory:", prop);
     }
-    
-	public static void main(String[] args) 
+
+	public static void main(String[] args)
 	{
         Properties prop = new Properties();
         prop.setProperty("enable_shared_cache", "true");
         prop.setProperty("enable_load_extension", "true");
         prop.setProperty("enable_spatialite", "true");
-        
+
         Connection conn = null;
         try {
             conn = getConnection(prop);
@@ -95,7 +95,7 @@ Connection connection = DriverManager.getConnection("jdbc.spatialite:/home/leo/w
 
 How to Use Memory Databases
 ---------------------------
-SpatiaLite supports on-memory database management, which does not create any database files. 
+SpatiaLite supports on-memory database management, which does not create any database files.
 To use a memory database in your Java code, get the database connection as follows:
 
 Connection connection = DriverManager.getConnection("jdbc.spatialite::memory:");
@@ -103,13 +103,19 @@ Connection connection = DriverManager.getConnection("jdbc.spatialite::memory:");
 Supported Operating Systems
 ===========================
 
-Currenty spatialite-jdbc-4.3.0a compiles on OS X 64 and Linux 64 (Ubuntu 14.04). 
+Currenty spatialite-jdbc-4.3.0a compiles on OS X 64 and Linux 64 (Ubuntu 14.04).
 
 The following operating systems are supported in theory, but no attempt to build has been done yet:
 
-*   Windows XP, Vista (Windows, x86 architecture, x86_64) 
-*   Mac OS X 10.9 (i386, x86_64) 
+*   Windows XP, Vista (Windows, x86 architecture, x86_64)
+*   Mac OS X 10.9 (i386, x86_64)
 *   Linux i386 (Intel), amd64 (64-bit X86 Intel processor), Linux arm
+
+Build Problems:
+1. config.guess issue `configure: error: cannot guess build type; you must specify one`: the solution is to copy /usr/share/automake-1.13/config.guess to properly detect `aarch64`
+2. missing sqlite.so: the solution is to build `target/sqlite-amalgamation` into `.so` file and put in `/usr/local/lib`
+3. If the `make` command fail, don't manually run the `./configure && make && make install`, but run `make` from the project root. This is because there are special `gcc` params like `-fPIC` needs to be added for ARM.
+4. `c++` compilation error related to `ISNAN`: modify the `Makefile` to use `-std=c++98`.
 
 License
 -------
@@ -117,25 +123,24 @@ This program follows the Apache License version 2.0 (<http://www.apache.org/lice
 
 It allows you to:
 
-*   freely download and use this software, in whole or in part, for personal, company internal, or commercial purposes; 
-*   use this software in packages or distributions that you create. 
+*   freely download and use this software, in whole or in part, for personal, company internal, or commercial purposes;
+*   use this software in packages or distributions that you create.
 
 It forbids you to:
 
-*   redistribute any piece of our originated software without proper attribution; 
-*   use any marks owned by us in any way that might state or imply that we xerial.org endorse your distribution; 
-*   use any marks owned by us in any way that might state or imply that you created this software in question. 
+*   redistribute any piece of our originated software without proper attribution;
+*   use any marks owned by us in any way that might state or imply that we xerial.org endorse your distribution;
+*   use any marks owned by us in any way that might state or imply that you created this software in question.
 
 It requires you to:
 
-*   include a copy of the license in any redistribution you may make that includes this software; 
-*   provide clear attribution to us, xerial.org for any distributions that include this software 
+*   include a copy of the license in any redistribution you may make that includes this software;
+*   provide clear attribution to us, xerial.org for any distributions that include this software
 
 It does not require you to:
 
-*   include the source of this software itself, or of any modifications you may have 
-made to it, in any redistribution you may assemble that includes it; 
-*   submit changes that you make to the software back to this software (though such feedback is encouraged). 
+*   include the source of this software itself, or of any modifications you may have
+made to it, in any redistribution you may assemble that includes it;
+*   submit changes that you make to the software back to this software (though such feedback is encouraged).
 
 See License FAQ <http://www.apache.org/foundation/licence-FAQ.html> for more details.
-
