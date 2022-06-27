@@ -93,7 +93,7 @@ ZLIB_LIB=$(ZLIB_DIR)/src/.libs/libz.a
 
 $(ZLIB_ARCHIVE):
 	@mkdir -p $(@D)
-	curl -o $@ http://fossies.org/linux/misc/zlib-$(ZLIB_VERSION).tar.gz
+	curl -o $@ https://zlib.net/fossils/zlib-$(ZLIB_VERSION).tar.gz
 	
 $(ZLIB_UNPACKED): $(ZLIB_ARCHIVE)
 	tar -xzf $< -C $(TARGET)
@@ -110,7 +110,7 @@ LZMA_LIB=$(LZMA_DIR)/src/sdk/7zip/Compress/LZMA/libLZMA.a
 
 $(LZMA_ARCHIVE):
 	@mkdir -p $(@D)
-	curl -o $@ http://tukaani.org/lzma/lzma-$(LZMA_VERSION).tar.gz
+	curl -o $@ https://tukaani.org/lzma/lzma-$(LZMA_VERSION).tar.gz
 	
 $(LZMA_UNPACKED): $(LZMA_ARCHIVE)
 	tar -xzf $< -C $(TARGET)
@@ -189,7 +189,7 @@ $(OUT_DIR)/sqlite3.o : $(LZMA_LIB) $(ZLIB_LIB) $(LIBXML2_LIB) $(PROJ_LIB) $(GEOS
 $(OUT_DIR)/$(LIBNAME): $(OUT_DIR)/sqlite3.o $(SRC)/org/spatialite/core/NativeDB.c $(OUT_DIR)/NativeDB.h
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c -o $(OUT_DIR)/NativeDB.o $(SRC)/org/spatialite/core/NativeDB.c $(SPATIALITE_FLAGS) 
-	$(CC) $(CFLAGS) -o $@ $(OUT_DIR)/*.o $(SPATIALITE_FLAGS) $(LINKFLAGS)
+	$(CC) -fPIC $(CFLAGS) -o $@ $(OUT_DIR)/*.o $(SPATIALITE_FLAGS) $(LINKFLAGS)
 	$(STRIP) $@
 
 
